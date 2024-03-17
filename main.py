@@ -1,27 +1,11 @@
-
-from tkinter import *
-from tkinter.ttk import ttk
 import numpy as np
+import time
+import random
 import csv
 import myConfig
+import webscrape
 
 csvFile = myConfig.filename
-
-class Table:
-     
-    def __init__(self,root):
-         
-        # code for creating table
-        for i in range(total_rows):
-            for j in range(total_columns):
-                 
-                self.e = Entry(root, width=20, fg='blue',
-                               font=('Arial',16,'bold'))
-                 
-                self.e.grid(row=i, column=j)
-                self.e.insert(END, lst[i][j])
-
-
 
 with open(csvFile) as infile:
     reader = csv.reader(infile) # Create a new reader
@@ -32,8 +16,13 @@ with open(csvFile) as infile:
 total_rows = len(lst)
 total_columns = len(lst[0])
 
-# create root window
-root = Tk()
-t = Table(root)
-root.mainloop()
+jsonFile = []
 
+for album in lst:
+    # print('album[1]: ', album[1], ' album[2]: ', album[2])
+    artURL = webscrape.get_album_art([album[1], album[2]])
+    time.sleep(0.7)
+    jsonFile.append([album[1], album[2], artURL])
+
+
+print(jsonFile)
